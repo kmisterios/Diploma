@@ -1,0 +1,26 @@
+<html>
+    <head>
+      {% if title %}
+      <title>{{ title }} - Verification service</title>
+      {% else %}
+      <title>Welcome to Service</title>
+      {% endif %}
+    </head>
+    <body>
+        <div>
+            <a style="color: white"  href="/home">Home</a>
+            <a style="color: white"  href="/links">Links</a>
+        </div>
+        <hr>
+        {% block content %}{% endblock %}
+        <style>
+        body {
+            background-image: url({{ url_for('static', filename='background.jpg') }});
+            background-repeat: no-repeat;
+            background-attachment: fixed; 
+            background-size: cover;
+        }
+        </style>
+        <body text='#FFFFFF'>
+    </body>
+</html>

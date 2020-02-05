@@ -1,0 +1,5 @@
+[
+{"name" : "Eggs", "price" : 8.77},
+{"name" : "Eggs", "price" : "invalid"},
+{"name" : 1, "price" : "invalid"}
+]
