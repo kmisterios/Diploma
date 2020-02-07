@@ -1,5 +1,10 @@
 [
+{"name" : "Eggs", "price" : 8.88},
+{"name" : "Eggs", "price" : 8.95},
 {"name" : "Eggs", "price" : 8.77},
-{"name" : "Eggs", "price" : "invalid"},
-{"name" : 1, "price" : "invalid"}
+{"name" : "Eggs", "price" : 8.76},
+{"name" : "Eggs", "price" : 8.72},
+{"name" : "Eggs", "price" : "lena"},
+{"name" : "Eggs", "price" : 8.44},
+{"name" : "Eggs", "price" : 8.21}
 ]
