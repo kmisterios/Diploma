@@ -1,2 +1,2 @@
-{"type" : "object", "properties" : {"price" : {"type" : "number"}, "name" : {"type" : "string"}}}
+{"type" : "object", "properties" : {"price" : {"type" : "number"}, "count" : {"type" : "number"}, "name" : {"type" : "string"}, "description" : {"type" : "string"}}}
 
