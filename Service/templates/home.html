@@ -44,9 +44,12 @@
     </style>
     <h1>Welcome to verification Service</h1>
     <body>
-        Here you can check your collected data. <br />
+        Here you can check your collected data. Choose the type of error to check. <br />
         <br />
-        <a href='/go'><input class='button' value='START' style="vertical-align:middle"></a>
+        <form method="POST">
+            <div>{{ form.link(rows=3, multiple=True) }}</div>
+             <a href='/go'><button type="submit" class="button" style="vertical-align:middle">Submit</button>
+    </form>
     </body>
     
     </center>

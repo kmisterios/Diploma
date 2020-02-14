@@ -8,8 +8,10 @@ import json
 from jsonschema import validate
 import numpy as np
 from cpd import cpd_count
+from generator import  error1, error2, error3, error4, error5
 
 ALLOWED_EXTENSIONS = {'json'}
+
 
 
 def allowed_file(filename):
@@ -21,7 +23,22 @@ def route():
 
 @app.route('/home', methods=['GET', 'POST'])
 def home():
-	return render_template('home.html', title='Home')
+	form = LinkForm()
+	n = 30
+	if request.method == 'POST':
+		type_of_error = int(form.link.data)
+		if type_of_error == 1:
+			error1(n)
+		if type_of_error == 2:
+			error2(n)
+		if type_of_error == 3:
+			error3(n)
+		if type_of_error == 4:
+			error4(n)
+		if type_of_error == 5:
+			error5(n)
+		return redirect('/verify')
+	return render_template('home.html', title='Home', form = form)
 
 @app.route('/go')
 def go():
@@ -29,7 +46,6 @@ def go():
 
 @app.route('/verify', methods=['GET', 'POST'])
 def link():
-	form = LinkForm()
 	path = 'Service/schemas.json'
 	with open(path, 'r') as f:
 		schema = json.loads(f.read())
@@ -62,7 +78,7 @@ def link():
 		result_num, type_num = cpd_count(samples, schema, "number")
 		result_len_str = cpd_count(samples, schema, "string")
 		result_len_arr = cpd_count(samples, schema, "array")
-		print(type_num)
+		result_item_count = cpd_count(samples, schema, "item")
 		for result, ttype in np.array([result_num, type_num]).T:
 			if (ttype == np.float64 and len(result) == 1) or (ttype == np.int64 and len(result)- int(result[-1]/5)
 			 + int(result[-1] % 5 in {1,2}) == 1):
@@ -80,8 +96,12 @@ def link():
 				flash('No anomaly \n')
 			else:
 				flash('Anomaly \n')
+		if len(result_item_count) - int(result_item_count[-1] / 5) + int(result_item_count[-1] % 5 in {1, 2}) == 1:
+			flash('No anomaly \n')
+		else:
+			flash('Anomaly \n')
 		return redirect('/index')
-	return render_template('verify.html', title='Enter your json:', form=form)
+	return render_template('verify.html', title='Enter your json:')
 
 
 @app.route('/index')
