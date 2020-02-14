@@ -59,7 +59,7 @@ def link():
 		# submit an empty part without filename
 		if file.filename == '':
 			flash('No selected file')
-			return redirect(request.url)
+			return redirect('/verify')
 		if file and allowed_file(file.filename):
 			filename = secure_filename(file.filename)
 		samples = json.loads(file.read())

@@ -39,16 +39,40 @@
     }
 
     .button:hover span:after {
-      opacity: 1;
+      opacity: 0;
       right: 0;
     }
     </style>
+
+    <style>
+        .example-2 .btn-tertiary{color:#FFFFFF;padding:0;line-height:40px;width:300px;margin:auto;display:block;border:2px solid #FFFFFF}
+        .example-2 .btn-tertiary:hover,.example-2 .btn-tertiary:focus{color:#FFFFFF;border-color:#FFFFFF}
+        .example-2 .input-file{width:.1px;height:.1px;opacity:0;overflow:hidden;position:absolute;z-index:-1}
+        .example-2 .input-file + .js-labelFile{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 10px;cursor:pointer}
+        .example-2 .input-file + .js-labelFile .icon:before{content:"\f093"}
+        .example-2 .input-file + .js-labelFile.has-file .icon:before{content:"\f00c";color:#FFFFFF}
+    </style>
     <h1>Enter your json:</h1>
     <form method=post enctype=multipart/form-data>
-        <p>
-            <input type=file class=button name=file value="Choose file" style="vertical-align:middle">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+        <div class="example-2">
+        <div class="form-group">
+            <input type="file" class="input-file" name="file" id="file" value="Choose file">
+            <label for="file" class="btn btn-tertiary js-labelFile">
+                <i class="icon fa fa-check"></i>
+                <span class="js-fileName">Upload generated samples</span>
+            </label>
+        </div>
+        </div>
             <input type=submit class=button value=Upload style="vertical-align:middle">
-        </p>
     </form>
     </center>
+    <script>
+    const input = document.querySelector('input');
+    const preview = document.querySelector('.preview');
+
+    input.style.opacity = 0;
+
+    </script>
 {% endblock %}

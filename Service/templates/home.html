@@ -46,9 +46,10 @@
     <body>
         Here you can check your collected data. Choose the type of error to check. <br />
         <br />
-        <form method="POST">
+        <form method="POST", action="">
             <div>{{ form.link(rows=3, multiple=True) }}</div>
-             <a href='/go'><button type="submit" class="button" style="vertical-align:middle">Submit</button>
+             <input type="submit" class='button' value='Submit' style="vertical-align:middle">
+
     </form>
     </body>
     
