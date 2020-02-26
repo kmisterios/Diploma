@@ -1,25 +1,30 @@
 import ruptures as rpt
 import json
 import numpy as np
+from flask import flash
 
 	
 def cpd_count(samples, schema, name):
 	result = []
 	if name == "item":
+		#flash("item:")
 		numbers = []
 		for sample in samples:
 			numbers.append(len(sample.keys()))
 		numbers = np.array(numbers)
-		model = "l2"
-		algo = rpt.Binseg(model=model).fit(numbers)
-		result = algo.predict(n_bkps=10)
+		model = "l1"
+		algo = rpt.Pelt(model=model, min_size=1, jump = 1).fit(numbers)
+		result = algo.predict(pen = 5) + ['item']
 		return result
 	keys = []
 	ttype = []
 	for key in schema["properties"].keys():
 		if schema["properties"][key]["type"] == name:
 			keys.append(key)
+	if name == "number":
+		keys.remove("idOfCrawler")
 	for key in keys:
+		#flash(key + ":")
 		numbers = []
 		for sample in samples:
 			if key in sample.keys():
@@ -33,17 +38,14 @@ def cpd_count(samples, schema, name):
 				else:
 					return result
 		numbers = np.array(numbers)
-		ttype.append(type(numbers[0]))
-		if ttype[-1] == np.float64:
-			model="rbf"
-			algo = rpt.Pelt(model=model).fit(numbers)
-			result.append(algo.predict(pen=1))
-		if ttype[-1] == np.int64:
-			model = "l2"
-			algo = rpt.Binseg(model=model).fit(numbers)
-			result.append(algo.predict(n_bkps=10))
-	if name == "number":
-		return result, ttype
-	else:
-		return result
+		#ttype.append(type(numbers[0]))
+		if numbers.min() == numbers.max():
+			model="l1"
+			algo = rpt.Pelt(model=model, min_size=1, jump = 1).fit(numbers)
+			result.append(algo.predict(pen=5) + [key])
+		else:
+			model = "rbf"
+			algo = rpt.Pelt(model=model, min_size=1, jump = 1).fit(numbers)
+			result.append(algo.predict(pen = 5) + [key])
+	return result
 
