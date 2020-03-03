@@ -17,7 +17,7 @@ def error1(n):
         data['customer name'] = random.choice(names)
         data['phone number'] = "+79" + str(random.randint(111111111,999999999))
         data_arr.append(data)
-    for i in range(int(n / 10)):
+    for i in range(int(n)):
         data = {}
         data["idOfCrawler"] = 1
         data['name'] = ''
@@ -28,7 +28,6 @@ def error1(n):
         data_arr.append(data)
     with open('anomaly1.json', 'w') as json_file:
         json.dump(data_arr, json_file)
-        print("file written")
 
 # Текст с вероятнстью P = 58,9% есть, а потом его нет
 def error2(n):
@@ -46,7 +45,7 @@ def error2(n):
             data["customer name"] = ''
         data['phone number'] = "+79" + str(random.randint(111111111,999999999))
         data_arr.append(data)
-    for i in range(int(n / 5)):
+    for i in range(int(n)):
         data = {}
         data["idOfCrawler"] = 1
         data["customer name"] = ''
@@ -58,7 +57,7 @@ def error2(n):
     with open('anomaly2.json', 'w') as json_file:
         json.dump(data_arr, json_file)
 
-# Число n раз [1,10], а c n + 1 раза [50,70]
+# Число n раз [8,9], а c n + 1 раза [50,70]
 def error3(n):
     data_arr = []
     n = int(n)
@@ -71,7 +70,7 @@ def error3(n):
         data['customer name'] = random.choice(names)
         data['phone number'] = "+79" + str(random.randint(111111111,999999999))
         data_arr.append(data)
-    for i in range(int(n / 10)):
+    for i in range(int(n)):
         data = {}
         data["idOfCrawler"] = 1
         data['name'] = random.choice(items)
@@ -121,7 +120,7 @@ def error5(n):
         data["customer name"] = random.choice(names)
         data['phone number'] = "+79" + str(random.randint(111111111,999999999))
         data_arr.append(data)
-    for i in range(int(n / 5)):
+    for i in range(int(n)):
         data = {}
         data["idOfCrawler"] = 1
         data['name'] = random.choice(items)

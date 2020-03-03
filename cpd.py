@@ -33,13 +33,10 @@ def cpd_count(samples, schema, name):
 				else:
 					numbers.append(len(sample[key]))
 			else:
-				if name == "number":
-					return result, ttype
-				else:
-					return result
+				return result
 		numbers = np.array(numbers)
 		#ttype.append(type(numbers[0]))
-		if numbers.min() == numbers.max():
+		if (numbers.min() == numbers.max()) or (key == "phone number"):
 			model="l1"
 			algo = rpt.Pelt(model=model, min_size=1, jump = 1).fit(numbers)
 			result.append(algo.predict(pen=5) + [key])
