@@ -21,8 +21,6 @@ def cpd_count(samples, schema, name):
 	for key in schema["properties"].keys():
 		if schema["properties"][key]["type"] == name:
 			keys.append(key)
-	if name == "number":
-		keys.remove("idOfCrawler")
 	for key in keys:
 		#flash(key + ":")
 		numbers = []

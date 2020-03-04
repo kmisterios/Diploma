@@ -3,7 +3,7 @@ import os
 from Service import app
 from flask import render_template, flash, redirect, request, url_for
 from werkzeug.utils import secure_filename
-from Service.forms import LinkForm
+from Service.forms import LinkForm, GetSchemasForm
 import json
 from jsonschema import validate
 import numpy as np
@@ -22,6 +22,99 @@ def allowed_file(filename):
 @app.route('/')
 def route():
 	return redirect('/home')
+
+@app.route('/schemas', methods = ['GET','POST'])
+def schemas():
+	form = GetSchemasForm()
+	if request.method == 'POST':
+		if request.form['action'] == 'Read':
+			return redirect('/schemas/schemas')
+		elif request.form['action'] == 'Get':
+			ids = form.id.data
+			if len(ids) == 0:
+				flash('YOU\'VE FORGOTTEN TO WRITE THE  ID OF THE SCHEMA')
+				return redirect('/schemas')
+			else:
+				try:
+					int(ids)
+				except:
+					flash('WRONG DATA')
+					return redirect('/schemas')
+				return redirect('/schemas/schemas/' + ids)
+		elif request.form['action'] == 'Upload':
+			schema = form.newSchema.data
+			if len(schema) == 0:
+				flash('YOU\'VE FORGOTTEN TO WRITE THE SCHEMA')
+				return redirect('/schemas')
+			else:
+				try:
+					schema = json.loads(schema)
+				except:
+					flash('WRONG DATA')
+					return redirect('/schemas')
+				path = 'Service/schemas.json'
+				with open(path, 'r') as f:
+					schemas = json.loads(f.read())
+				last_id = schemas[-1]["idOfCrawler"]
+				schema["idOfCrawler"] = last_id + 1
+				schemas = schemas + [schema]
+				with open(path, 'w') as f:
+					json.dump(schemas, f)
+				flash('YOUR SCHEMA IS SUCCESSFULLY WRITTEN')
+				return redirect('/schemas')
+		elif request.form['action'] == 'Delete':
+			ids = form.idDelete.data
+			if len(ids) == 0:
+				flash('YOU\'VE FORGOTTEN TO WRITE THE  ID OF THE SCHEMA')
+				return redirect('/schemas')
+			else:
+				try:
+					int(ids)
+				except:
+					flash('WRONG DATA')
+					return redirect('/schemas')
+				return redirect('/schemas/delete/' + ids)
+	return render_template('schemas_base.html', title="Schemas_base", form = form)
+
+@app.route('/schemas/schemas', methods = ['GET'])
+def get_schemas():
+	path = 'Service/schemas.json'
+	with open(path, 'r') as f:
+		schemas = json.loads(f.read())
+	for schema in schemas:
+		flash(schema)
+	return render_template('schemas.html', title = "Schemas")
+
+@app.route('/schemas/schemas/<int:schema_id>', methods=['GET'])
+def get_schema(schema_id):
+	path = 'Service/schemas.json'
+	with open(path, 'r') as f:
+		schemas = json.loads(f.read())
+	schema = filter(lambda t: t["idOfCrawler"] == schema_id, schemas)
+	schema = list(schema)
+	if len(schema) == 0:
+		flash("There is no schema with id = " + str(schema_id))
+	else:
+		flash(schema[0])
+	return render_template('schema.html', title = "Schema")
+
+@app.route('/schemas/delete/<int:schema_id>', methods=['GET'])
+def delete_schema(schema_id):
+	path = 'Service/schemas.json'
+	with open(path, 'r') as f:
+		schemas = json.loads(f.read())
+	schema = filter(lambda t: t["idOfCrawler"] == schema_id, schemas)
+	schema = list(schema)
+	if len(schema) == 0:
+		flash("There is no schema with id = " + str(schema_id))
+	else:
+		schemas.remove(schema[0])
+		for i in range(len(schemas)):
+			schemas[i]["idOfCrawler"] = i + 1
+		with open(path, 'w') as f:
+			json.dump(schemas, f)
+		flash("Schema has been deleted!")
+	return render_template('schema.html', title = "Schema")
 
 @app.route('/home', methods=['GET', 'POST'])
 def home():
@@ -61,7 +154,8 @@ def link():
 	path = 'Service/schemas.json'
 	path1 = 'collections.json'
 	with open(path, 'r') as f:
-		schema = json.loads(f.read())
+		schemass = json.loads(f.read())
+	schema = schemass[0]
 	with open(path1, 'r') as f:
 		samples = json.loads(f.read())
 	if request.method == 'POST':

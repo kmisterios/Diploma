@@ -8,3 +8,12 @@ class LinkForm(FlaskForm):
     link = SelectField(label='Error', choices=name_list, validators = [DataRequired()])
     submit = SubmitField('GO')
 
+class GetSchemasForm(FlaskForm):
+    id = StringField('id', validators=[DataRequired()])
+    idDelete = StringField('idDelete', validators=[DataRequired()])
+    newSchema = StringField('newSchema', validators=[DataRequired()])
+    submit1 = SubmitField('Get certain scheme')
+    submit2 = SubmitField('Get existing schemas')
+    submit3 = SubmitField('Upload new schema')
+    submit4 = SubmitField('Delete schema')
+

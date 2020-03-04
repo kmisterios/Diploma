@@ -55,7 +55,6 @@
     <h1>Enter your json:</h1>
     <form method=post enctype=multipart/form-data>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-
         <div class="example-2">
         <div class="form-group">
             <input type="file" class="input-file" name="file" id="file" value="Choose file">
@@ -67,6 +66,13 @@
         </div>
             <input type=submit class=button value=Upload style="vertical-align:middle">
     </form>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+    <b><font face="Comic Sans" style='cursive'> {{ message }}</font></b> <br />
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
     </center>
     <script>
     const input = document.querySelector('input');
