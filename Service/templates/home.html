@@ -62,6 +62,13 @@
             <br />
         Error 5 - the quantity of collected items changes. <br />
         </font>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+    <b><font face="Comic Sans" size="6" style='cursive'> {{ message }}</font></b> <br />
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
     </body>
     
     </center>

@@ -7,7 +7,6 @@ from flask import flash
 def cpd_count(samples, schema, name):
 	result = []
 	if name == "item":
-		#flash("item:")
 		numbers = []
 		for sample in samples:
 			numbers.append(len(sample.keys()))
@@ -17,23 +16,20 @@ def cpd_count(samples, schema, name):
 		result = algo.predict(pen = 5) + ['item']
 		return result
 	keys = []
-	ttype = []
 	for key in schema["properties"].keys():
 		if schema["properties"][key]["type"] == name:
 			keys.append(key)
 	for key in keys:
-		#flash(key + ":")
 		numbers = []
 		for sample in samples:
 			if key in sample.keys():
-				if name == "number":
+				if name == "number" or name == "integer":
 					numbers.append(sample[key])
 				else:
 					numbers.append(len(sample[key]))
 			else:
 				return result
 		numbers = np.array(numbers)
-		#ttype.append(type(numbers[0]))
 		if (numbers.min() == numbers.max()) or (key == "phone number"):
 			model="l1"
 			algo = rpt.Pelt(model=model, min_size=1, jump = 1).fit(numbers)
