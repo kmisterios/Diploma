@@ -8,9 +8,8 @@ import json
 from jsonschema import validate
 import numpy as np
 from cpd import cpd_count
-from generator import error1, error2, error3, error4, error5, noErrors
+from generator import error1, error2, error3, error4, error5, error6, noErrors
 import random
-import requests
 
 ALLOWED_EXTENSIONS = {'json'}
 TP, FN, FP = 0, 0, 0
@@ -257,7 +256,6 @@ def generate(schema_id):
             return "CAN'T GENERATE THIS TYPE OF MISTAKE WITH CHOSEN SCHEMA"
     if type_of_error == 3:
         error, samp = error3(n, schema)
-        print(error)
         if error == 0:
             return "CAN'T GENERATE THIS TYPE OF MISTAKE WITH CHOSEN SCHEMA"
     if type_of_error == 4:
@@ -268,6 +266,11 @@ def generate(schema_id):
     if type_of_error == 5:
         error = 'item'
         samp = error5(n, schema)
+    if type_of_error == 6:
+        error, samp = error6(n, schema)
+        print(error)
+        if error == 0:
+            return "CAN'T GENERATE THIS TYPE OF MISTAKE WITH CHOSEN SCHEMA"
     if type_of_error == 0:
         error = 'no'
         samp = noErrors(n, schema)
@@ -456,7 +459,10 @@ def verify_test(schema_id):
             return {"prediction": samp, "message": message}
 
     for result in result_len_str:
+        print(result)
         if len(result) > 2:
+            if result[0] < len(samples_collection):  # пока не знаю, как исправить
+                result = result[1:]
             for j in range(len(result) - 1):
                 length = result[j] - len(samples_collection) if j == 0 else result[j] - result[j - 1]
                 for k in range(length):
@@ -464,6 +470,7 @@ def verify_test(schema_id):
                         samp.append(0)
                     else:
                         samp.append(1)
+            print(samp)
             assert len(samp) == len(new_samples)
             return {"prediction": samp, "message": message}
 
@@ -488,6 +495,7 @@ def verify_test(schema_id):
                     samp.append(0)
                 else:
                     samp.append(1)
+        print(len(samp), len(new_samples))
         assert len(samp) == len(new_samples)
         return {"prediction": samp, "message": message}
 
